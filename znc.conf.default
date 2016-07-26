@@ -8,7 +8,7 @@
 // But if you feel risky, you might want to read help on /znc saveconfig and /znc rehash.
 // Also check http://en.znc.in/wiki/Configuration
 
-Version = 1.4
+Version = 1.6.3
 <Listener l>
   Port = 6000
   IPv4 = true
@@ -16,15 +16,15 @@ Version = 1.4
   SSL = true
 </Listener>
 
-LoadModule = partyline
+LoadModule = webadmin
 
 <User dqminh>
-  Pass       = sha256#2c8a27bbb62b6d6ec8a9b2292ad4d40c05de4f1f33efd829e0a0b4f092fcfa71#+sLYTL_C;?zRrCrCrU1T#
+  Pass       = sha256#e67bfb7d748fb5af22968bb423088ceb3b70e54b041430f69e5754b725cfa20c#oSljYr.Vb457pHdhh?Kk#
   Admin      = true
   Nick       = dqminh
   AltNick    = dqminh_
   Ident      = dqminh
-  RealName   = Daniel, Dao
+  RealName   = Daniel Dao
   Buffer     = 999
   AutoClearChanBuffer = false
   ChanModes  = +stn
@@ -41,13 +41,15 @@ LoadModule = partyline
 
     Server     = irc.freenode.net 6667
 
-    <Chan docker>
+    <Chan #docker>
     </Chan>
-    <Chan docker-dev>
+    <Chan #docker-dev>
     </Chan>
-    <Chan libcontainer>
+    <Chan #opencontainers>
     </Chan>
-    <Chan go-nuts>
+    <Chan #libcontainer>
+    </Chan>
+    <Chan #systemd>
     </Chan>
   </Network>
 </User>

@@ -1,30 +1,25 @@
-FROM ubuntu:14.04
+FROM debian:jessie
 
-RUN adduser znc
+# explicitly set user/group IDs
+RUN groupadd -r znc --gid=999 && useradd -r -g znc --uid=999 znc
 
-RUN apt-get update && apt-get install -yy \
-  build-essential \
-  libssl-dev \
-  libperl-dev \
-  pkg-config \
-  wget
+ENV VERSION=1.6.3
 
-WORKDIR /usr/local/src
-RUN wget http://znc.in/releases/znc-1.4.tar.gz && tar xf znc-1.4.tar.gz
+RUN apt-get update \
+    && apt-get install -yy sudo build-essential libssl-dev libperl-dev pkg-config wget ca-certificates \
+    && cd /usr/local/src \
+    && wget http://znc.in/releases/znc-$VERSION.tar.gz \
+    && tar xf znc-$VERSION.tar.gz \
+    && cd /usr/local/src/znc-$VERSION \
+    && ./configure \
+    && make \
+    && make install \
+    && apt-get remove -y wget build-essential \
+    && apt-get autoremove -y \
+    && apt-get clean \
+    && rm -rf /src* /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-WORKDIR /usr/local/src/znc-1.4
-RUN ./configure && make && make install
-
-ADD . /src
-RUN   cd /src && chmod +x run-znc && cp run-znc /usr/local/bin/
-
-RUN mkdir /znc-data
-RUN chown znc:znc /znc-data
-RUN chmod 777 /znc-data
-
-WORKDIR /home/znc
+COPY . /src
 VOLUME ["/znc-data"]
-USER znc
 EXPOSE 6000
-
-CMD   run-znc
+CMD /src/run-znc

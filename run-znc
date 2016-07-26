@@ -12,4 +12,5 @@ if [ ! -f "${ZNCDATA}/znc.pem" ]; then
   znc --makepem -d "$ZNCDATA"
 fi
 
-exec znc -f -d "$ZNCDATA"
+chown -R znc:znc $ZNCDATA
+exec sudo -u znc znc -f -d "$ZNCDATA"
